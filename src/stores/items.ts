@@ -1,15 +1,21 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-export const useItemsStore = defineStore("itemsArray", () => {
-  const items = ref<string[]>([]);
-  function add(newItem: string) {
-    if (newItem.trim() !== "") items.value.push(newItem.trim());
+interface Task {
+  text: string;
+  completed: boolean;
+}
+
+export const useTasksStore = defineStore("tasksArray", () => {
+  const tasks = ref<Task[]>([]);
+  function add(newText: string): void {
+    if (newText.trim() !== "") {
+      tasks.value.push({ text: newText.trim(), completed: false });
+    }
   }
-  function remove(itemToRemove: string) {
-    const idx = items.value.indexOf(itemToRemove);
-    if (idx !== -1) items.value.splice(idx, 1);
+  function remove(idx: number): void {
+    tasks.value.splice(idx, 1);
   }
 
-  return { items, add, remove };
+  return { tasks, add, remove };
 });

@@ -1,13 +1,24 @@
 <script setup lang="ts">
-import { useItemsStore } from "@/stores/items";
+import { useTasksStore } from "@/stores/items";
+
+interface Task {
+  text: string;
+  completed: boolean;
+}
+
+const tasksStore = useTasksStore();
 
 let inputText = "";
-const itemsStore = useItemsStore();
+
+const toggleCompleted = (task: Task) => {
+  console.log(task.completed);
+  task.completed = !task.completed;
+};
 </script>
 
 <template>
   <div class="mx-20 flex flex-col">
-    <div class="text-center">
+    <div class="text-center mb-5">
       <input
         class="border-2 border-blue-500 py-2 px-2 mr-2 rounded-md"
         type="text"
@@ -16,20 +27,58 @@ const itemsStore = useItemsStore();
       />
       <button
         class="bg-blue-500 text-white rounded-md px-4 py-2 border-2 border-blue-500 hover:bg-blue-600 active:bg-emerald-300"
-        @click="itemsStore.add(inputText)"
+        @click="tasksStore.add(inputText)"
       >
         +
       </button>
     </div>
-    <div class="text-blue-400 text-xl list-none">
-      <li v-for="item in itemsStore.items">
-        <button
-          class="bg-pink-400 text-white rounded-md px-2 mb-2 border-2 border-pink-400 hover:bg-red-400 active:bg-purple-500"
-          @click="itemsStore.remove(item)"
-        >
-          x
-        </button>
-        {{ item }}
+    <div class="text-xl list-none">
+      <li
+        v-for="(task, idx) in tasksStore.tasks"
+        :key="idx"
+        :class="{ 'bg-gray-100': idx % 2 === 0, 'bg-gray-200': idx % 2 !== 0 }"
+      >
+        <div class="flex flex-row justify-between items-center">
+          <div class="flex items-center">
+            <div class="ml-2 w-[1rem]">
+              <svg
+                @click="toggleCompleted(task)"
+                :class="{
+                  'text-green-400': !task.completed,
+                  'text-gray-500': task.completed,
+                }"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-check-circle"
+              >
+                <path d="M22 11.07V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div
+              class="mx-3"
+              :class="{
+                'text-blue-400': !task.completed,
+                'text-gray-500 line-through': task.completed,
+              }"
+            >
+              {{ task.text }}
+            </div>
+          </div>
+          <div>
+            <button
+              class="bg-pink-400 text-white rounded-md px-2 pb-1 my-2 mx-2 border-2 border-pink-400 hover:bg-red-500 active:bg-purple-500"
+              @click="tasksStore.remove(idx)"
+            >
+              x
+            </button>
+          </div>
+        </div>
       </li>
     </div>
   </div>

@@ -1,10 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-
-interface Task {
-  text: string;
-  completed: boolean;
-}
+import type { Task } from "@/interfaces";
 
 export const useTasksStore = defineStore("tasksArray", () => {
   const tasks = ref<Task[]>([]);

@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { useTasksStore } from "@/stores/items";
-
-interface Task {
-  text: string;
-  completed: boolean;
-}
+import { useTasksStore } from "@/stores/tasks";
+import type { Task } from "@/interfaces";
 
 const tasksStore = useTasksStore();
 
 let inputText = "";
 
 const toggleCompleted = (task: Task) => {
-  console.log(task.completed);
   task.completed = !task.completed;
 };
 </script>
@@ -40,25 +35,8 @@ const toggleCompleted = (task: Task) => {
       >
         <div class="flex flex-row justify-between items-center">
           <div class="flex items-center">
-            <div class="ml-2 w-[1rem]">
-              <svg
-                @click="toggleCompleted(task)"
-                :class="{
-                  'text-green-400': !task.completed,
-                  'text-gray-500': task.completed,
-                }"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-check-circle"
-              >
-                <path d="M22 11.07V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
+            <div class="ml-2">
+              <input type="checkbox" v-model="task.completed" />
             </div>
             <div
               class="mx-3"

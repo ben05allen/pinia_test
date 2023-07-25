@@ -3,11 +3,11 @@
     <Header />
   </div>
   <div>
-    <Items />
+    <Tasks />
   </div>
 </template>
 
 <script setup lang="ts">
 import Header from "@/components/Header.vue";
-import Items from "@/components/Items.vue";
+import Tasks from "@/components/Tasks.vue";
 </script>
